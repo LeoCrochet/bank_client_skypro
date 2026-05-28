@@ -26,7 +26,7 @@ for account in account_numbers:
     masked = get_mask_account(account)
     print(f"{account} -> {masked}")
 
-from src.widget import  mask_account_card
+from src.widget import  mask_account_card, get_date
 
 
 print("=" * 50)
@@ -48,5 +48,16 @@ for example in examples:
 print("\n" + "=" * 50)
 print("Демонстрация работы функции get_date:")
 print("=" * 50)
+
+dates = [
+    "2024-03-11T02:26:18.671407",
+    "2023-12-25T15:30:00.000000",
+    "2024-01-01T00:00:00",
+    "2024-02-29T10:30:45.123456",
+]
+
+for date_string in dates:
+    result = get_date(date_string)
+    print(f"{date_string:35} -> {result}")
 
 
