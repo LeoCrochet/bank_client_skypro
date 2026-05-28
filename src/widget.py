@@ -15,12 +15,18 @@ def mask_account_card(account_info: str) -> str:
                     "Maestro 7000792289606361"
                     "Счет 73654108430135874305"
 
+    Raises:
+        ValueError: Если не удалось определить тип карты/счета
+
     Returns:
         str: Строка с замаскированным номером.
             Примеры: "Visa Platinum 7000 79** **** 6361"
                     "Счет **4305"
     """
     parts = account_info.rsplit(" ", 1)
+
+    if len(parts) != 2:
+        raise ValueError(f"Некорректный формат строки: {account_info}")
 
     card_type, number = parts[0], parts[1]
 
