@@ -1,6 +1,7 @@
 """Пример использования функций маскировки."""
 
 from src.masks import get_mask_account, get_mask_card_number
+from src.widget import get_date, mask_account_card
 
 # Примеры для карт
 card_numbers = [
@@ -26,20 +27,18 @@ for account in account_numbers:
     masked = get_mask_account(account)
     print(f"{account} -> {masked}")
 
-from src.widget import  mask_account_card, get_date
-
 
 print("=" * 50)
 print("Демонстрация работы функции mask_account_card:")
 print("=" * 50)
 
 examples = [
-        "Visa Platinum 7000792289606365",
-        "Maestro 7000792289606361",
-        "MasterCard 1234567890123456",
-        "Счет 73654108430135874305",
-        "счет 1234567897890",
-    ]
+    "Visa Platinum 7000792289606365",
+    "Maestro 7000792289606361",
+    "MasterCard 1234567890123456",
+    "Счет 73654108430135874305",
+    "счет 1234567897890",
+]
 
 for example in examples:
     result = mask_account_card(example)
@@ -59,5 +58,3 @@ dates = [
 for date_string in dates:
     result = get_date(date_string)
     print(f"{date_string:35} -> {result}")
-
-

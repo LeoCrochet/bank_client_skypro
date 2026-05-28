@@ -1,5 +1,6 @@
 from src.masks import get_mask_account, get_mask_card_number
 
+
 def mask_account_card(account_info: str) -> str:
     """
     Маскирует номер карты или счета в строке.
@@ -23,7 +24,7 @@ def mask_account_card(account_info: str) -> str:
 
     card_type, number = parts[0], parts[1]
 
-# Определяем тип и применяем соответствующую маскировку
+    # Определяем тип и применяем соответствующую маскировку
     if "Счет" in card_type or "счет" in card_type:
         # Для счета используем маскировку счета
         masked_number = get_mask_account(number)
