@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.masks import get_mask_account, get_mask_card_number
 
 
@@ -45,6 +47,7 @@ def mask_account_card(account_info: str) -> str:
 def get_date(date_string: str) -> str:
     """
     Преобразует строку с датой из формата ISO в формат ДД.ММ.ГГГГ.
+    Использует datetime
 
     Args:
         date_string (str): Строка с датой в формате "YYYY-MM-DDTHH:MM:SS.ms"
@@ -52,11 +55,16 @@ def get_date(date_string: str) -> str:
     Returns:
         str: Дата в формате "ДД.ММ.ГГГГ"
     """
-    # Извлекаем только дату (первые 10 символов: YYYY-MM-DD)
-    date_part = date_string.split("T")[0]
+    try:
 
-    # Разделяем на компоненты
-    year, month, day = date_part.split("-")
+        dt = datetime.fromisoformat(date_string)
+        return dt.strftime("%d.%m.%Y")
 
-    # Возвращаем в формате ДД.ММ.ГГГГ
-    return f"{day}.{month}.{year}"
+    except ValueError:
+
+        try:
+            # Пробуем парсить только дату (без времени)
+            dt = datetime.strptime(date_string[:10], "%Y-%m-%d")
+            return dt.strftime("%d.%m.%Y")
+        except (ValueError, IndexError) as e:
+            raise ValueError(f"Некорректный формат даты: {date_string}. Ожидается ISO формат") from e
