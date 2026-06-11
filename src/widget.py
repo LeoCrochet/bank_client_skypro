@@ -38,7 +38,6 @@ def mask_account_card(account_info: str) -> str:
         masked_number = get_mask_account(number)
     else:
         # Для карты используем маскировку карты
-
         masked_number = get_mask_card_number(number)
 
     return f"{card_type} {masked_number}"
