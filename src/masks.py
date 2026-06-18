@@ -49,7 +49,7 @@ def get_mask_account(account_number: str) -> str:
         ValueError: Если номер счета содержит менее 4 цифр
     """
     # Удаляем все пробелы
-    clean_number = account_number.replace(" ", "").replace("\t","")
+    clean_number = account_number.replace(" ", "").replace("\t", "")
 
     if len(clean_number) < 4:
         raise ValueError("Номер счета должен содержать минимум 4 цифры")

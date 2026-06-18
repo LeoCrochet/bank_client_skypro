@@ -1,13 +1,14 @@
 """Тесты для модуля widget."""
 
 import pytest
-from src.widget import mask_account_card, get_date
 
+from src.widget import get_date, mask_account_card
 
 # -------- ФИКСТУРЫ --------
 
+
 @pytest.fixture
-def card_test_data() -> list:
+def card_test_data() -> list[tuple[str, str]]:
     """Фикстура: данные для тестирования карт."""
     return [
         ("Visa Platinum 7000792289606361", "Visa Platinum 7000 79** **** 6361"),
@@ -18,7 +19,7 @@ def card_test_data() -> list:
 
 
 @pytest.fixture
-def account_test_data() -> list:
+def account_test_data() -> list[tuple[str, str]]:
     """Фикстура: данные для тестирования счетов."""
     return [
         ("Счет 73654108430135874305", "Счет **4305"),
@@ -29,22 +30,22 @@ def account_test_data() -> list:
 
 
 @pytest.fixture
-def invalid_widget_inputs() -> list:
+def invalid_widget_inputs() -> list[str]:
     """Фикстура: некорректные входные данные."""
     return [
-        "",                                      # пустая строка
-        "VisaPlatinum7000792289606361",          # без пробела
-        "Visa Platinum",                         # только название
-        "7000792289606361",                      # только номер
-        "Visa 123456789012345",                  # короткий номер
-        "Visa 1234abcd90123456",                 # буквы в номере
-        "Счет 123",                              # короткий счет
-        "Счет 1234abcd",                         # буквы в счете
+        "",  # пустая строка
+        "VisaPlatinum7000792289606361",  # без пробела
+        "Visa Platinum",  # только название
+        "7000792289606361",  # только номер
+        "Visa 123456789012345",  # короткий номер
+        "Visa 1234abcd90123456",  # буквы в номере
+        "Счет 123",  # короткий счет
+        "Счет 1234abcd",  # буквы в счете
     ]
 
 
 @pytest.fixture
-def date_test_data() -> list:
+def date_test_data() -> list[tuple[str, str]]:
     """Фикстура: корректные даты."""
     return [
         ("2024-03-11T02:26:18.671407", "11.03.2024"),
@@ -56,7 +57,7 @@ def date_test_data() -> list:
 
 
 @pytest.fixture
-def invalid_date_inputs() -> list:
+def invalid_date_inputs() -> list[str]:
     """Фикстура: некорректные даты."""
     return [
         "",
@@ -70,28 +71,32 @@ def invalid_date_inputs() -> list:
 
 # -------- ТЕСТЫ ДЛЯ mask_account_card --------
 
-def test_mask_account_card_card_types(card_test_data: list) -> None:
+
+def test_mask_account_card_card_types(card_test_data: list[tuple[str, str]]) -> None:
     """Тест: распознавание и маскировка карт."""
     for input_data, expected in card_test_data:
         assert mask_account_card(input_data) == expected
 
 
-def test_mask_account_card_account_types(account_test_data: list) -> None:
+def test_mask_account_card_account_types(account_test_data: list[tuple[str, str]]) -> None:
     """Тест: распознавание и маскировка счетов."""
     for input_data, expected in account_test_data:
         assert mask_account_card(input_data) == expected
 
 
-@pytest.mark.parametrize("input_data, expected_error", [
-    ("", "Некорректный формат строки"),
-    ("VisaPlatinum7000792289606361", "Некорректный формат строки"),
-    ("Visa Platinum", "Номер карты должен содержать только цифры"),
-    ("7000792289606361", "Некорректный формат строки"),
-    ("Visa 123456789012345", "Номер карты должен содержать 16 цифр"),
-    ("Visa 1234abcd90123456", "Номер карты должен содержать только цифры"),
-    ("Счет 123", "Номер счета должен содержать минимум 4 цифры"),
-    ("Счет 1234abcd", "Номер счета должен содержать только цифры"),
-])
+@pytest.mark.parametrize(
+    "input_data, expected_error",
+    [
+        ("", "Некорректный формат строки"),
+        ("VisaPlatinum7000792289606361", "Некорректный формат строки"),
+        ("Visa Platinum", "Номер карты должен содержать только цифры"),
+        ("7000792289606361", "Некорректный формат строки"),
+        ("Visa 123456789012345", "Номер карты должен содержать 16 цифр"),
+        ("Visa 1234abcd90123456", "Номер карты должен содержать только цифры"),
+        ("Счет 123", "Номер счета должен содержать минимум 4 цифры"),
+        ("Счет 1234abcd", "Номер счета должен содержать только цифры"),
+    ],
+)
 def test_mask_account_card_invalid(input_data: str, expected_error: str) -> None:
     """Тест: обработка некорректных входных данных."""
     with pytest.raises(ValueError, match=expected_error):
@@ -100,20 +105,24 @@ def test_mask_account_card_invalid(input_data: str, expected_error: str) -> None
 
 # -------- ТЕСТЫ ДЛЯ get_date --------
 
-def test_get_date_valid(date_test_data: list) -> None:
+
+def test_get_date_valid(date_test_data: list[tuple[str, str]]) -> None:
     """Тест: корректное преобразование даты."""
     for date_str, expected in date_test_data:
         assert get_date(date_str) == expected
 
 
-@pytest.mark.parametrize("date_str", [
-    "",
-    "11.03.2024",
-    "2024/03/11",
-    "2024-13-01",
-    "2024-02-30",
-    "not a date",
-])
+@pytest.mark.parametrize(
+    "date_str",
+    [
+        "",
+        "11.03.2024",
+        "2024/03/11",
+        "2024-13-01",
+        "2024-02-30",
+        "not a date",
+    ],
+)
 def test_get_date_invalid(date_str: str) -> None:
     """Тест: обработка некорректных дат."""
     with pytest.raises(ValueError, match="Некорректный формат даты"):
