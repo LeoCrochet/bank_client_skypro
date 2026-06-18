@@ -36,10 +36,10 @@ bank-mask-project/
 │   ├── widget.py          # Функции для виджетов  
 │   └── processing.py      # Функции обработки данных  
 ├── tests/                  # Модульные тесты  
-│   ├─── __init__.py        # Инициализация пакета
-│   ├─── test_masks.py      # Тесты для модуля masks
-│   ├─── test_processing.py # Тесты для модуля processing
-│   └──test_widget.py     # Тесты для модуля widget
+│   ├─── __init__.py        # Инициализация пакета  
+│   ├─── test_masks.py      # Тесты для модуля masks  
+│   ├─── test_processing.py # Тесты для модуля processing  
+│   └──test_widget.py     # Тесты для модуля widget  
 ├── pyproject.toml         # Конфигурация проекта  
 ├── .flake8                # Конфигурация линтера  
 ├── example.py              # Примеры работы функций
