@@ -1,17 +1,12 @@
-#Новая ветка develop
+# Новая ветка develop
 """Пример использования функций маскировки."""
 
 from src.masks import get_mask_account, get_mask_card_number
-from src.widget import get_date, mask_account_card
 from src.processing import filter_by_state, sort_by_date
-
+from src.widget import get_date, mask_account_card
 
 # Примеры для карт
-card_numbers = [
-    "1234567890123456",
-    "1111222233334444",
-    "9876543210987654"
-]
+card_numbers = ["1234567890123456", "1111222233334444", "9876543210987654"]
 
 print("Маскировка номеров карт:")
 for card in card_numbers:
@@ -67,13 +62,13 @@ for date_string in dates:
 
 # Исходные данные
 transactions = [
-    {'id': 414288290, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
-    {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'},
-    {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'},
-    {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'},
+    {"id": 414288290, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
+    {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
+    {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
+    {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
 ]
-print("\n"*2 + "=" * 70)
-print(f"Демонстрация фильтрации транзакций.".upper())
+print("\n" * 2 + "=" * 70)
+print("Демонстрация фильтрации транзакций.".upper())
 print("=" * 70)
 print("=" * 70)
 print("ИСХОДНЫЙ СПИСОК ТРАНЗАКЦИЙ:")
@@ -91,13 +86,13 @@ for transaction in executed:
 print("=" * 70)
 print("ФИЛЬТРАЦИЯ ПО СТАТУСУ 'CANCELED':")
 print("=" * 70)
-canceled = filter_by_state(transactions, 'CANCELED')
+canceled = filter_by_state(transactions, "CANCELED")
 for transaction in canceled:
     print(f"  {transaction}")
 
 """Демонстрация сортировки транзакций."""
-print("\n"*2 + "=" * 70)
-print(f"Демонстрация сортировки транзакций.".upper())
+print("\n" * 2 + "=" * 70)
+print("Демонстрация сортировки транзакций.".upper())
 print("=" * 70)
 print("=" * 70)
 print("СОРТИРОВКА ПО УБЫВАНИЮ (НОВЫЕ СВЕРХУ) - ПО УМОЛЧАНИЮ:")
