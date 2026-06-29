@@ -25,3 +25,14 @@ def transaction_descriptions(transactions: list[dict]):
     """
     for transaction in transactions:
         yield transaction.get("description", "")
+
+
+def card_number_generator(start: int, end: int):
+    """
+    Генератор номеров банковских карт в заданном диапазоне.
+    """
+    if start < 1 or end > 9999999999999999 or start > end:
+        raise ValueError("Некорректный диапазон")
+
+    for number in range(start, end + 1):
+        yield " ".join([f"{number:016d}"[i:i + 4] for i in range(0, 16, 4)])
