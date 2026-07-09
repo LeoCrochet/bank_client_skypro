@@ -13,6 +13,7 @@ def filter_by_currency(transactions: list[dict], currency: str):
         if transaction.get("operationAmount", {}).get("currency", {}).get("code") == currency:
             yield transaction
 
+
 def transaction_descriptions(transactions: list[dict]):
     """
     Генератор, который возвращает описание каждой транзакции по очереди.
@@ -27,12 +28,12 @@ def transaction_descriptions(transactions: list[dict]):
         yield transaction.get("description", "")
 
 
-def card_number_generator(start: int, end: int):
+def card_number_generator(start: int, stop: int):
     """
     Генератор номеров банковских карт в заданном диапазоне.
     """
-    if start < 1 or end > 9999999999999999 or start > end:
+    if start < 1 or stop > 9999999999999999 or start > stop:
         raise ValueError("Некорректный диапазон")
 
-    for number in range(start, end + 1):
-        yield " ".join([f"{number:016d}"[i:i + 4] for i in range(0, 16, 4)])
+    for number in range(start, stop + 1):
+        yield " ".join([f"{number:016d}"[i : i + 4] for i in range(0, 16, 4)])
