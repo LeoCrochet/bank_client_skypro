@@ -34,12 +34,14 @@ bank-mask-project/
 │   ├── __init__.py        # Инициализация пакета  
 │   ├── masks.py           # Функции маскировки  
 │   ├── widget.py          # Функции для виджетов  
-│   └── processing.py      # Функции обработки данных  
+│   ├──  processing.py      # Функции обработки данных  
+│   └──  generators.py     # Функции генераторов данных
 ├── tests/                  # Модульные тесты  
 │   ├─── __init__.py        # Инициализация пакета  
 │   ├─── test_masks.py      # Тесты для модуля masks  
 │   ├─── test_processing.py # Тесты для модуля processing  
-│   └──test_widget.py     # Тесты для модуля widget  
+│   ├───test_widget.py     # Тесты для модуля widget 
+│   ├───test_generators.py # Тесты для модуля generators
 ├── pyproject.toml         # Конфигурация проекта  
 ├── .flake8                # Конфигурация линтера  
 ├── example.py              # Примеры работы функций
@@ -61,17 +63,19 @@ Flake8 - линтинг
 mypy - проверка типов
 
 ## Тесты
-| Файл | Строк | Пропущено | Покрытие |
-|------|-------|-----------|----------|
-| `src/__init__.py` | 0 | 0 | 100% |
-| `src/masks.py` | 16 | 0 | 100% |
-| `src/processing.py` | 21 | 1 | 95% |
-| `src/widget.py` | 21 | 1 | 95% |
-| `tests/__init__.py` | 0 | 0 | 100% |
-| `tests/test_masks.py` | 40 | 0 | 100% |
-| `tests/test_processing.py` | 61 | 0 | 100% |
-| `tests/test_widget.py` | 46 | 2 | 96% |
-| **ИТОГО** | **205** | **4** | **98%** |
+| Файл                       | Stmts   | Пропущено | Покрытие |
+|----------------------------|---------|-----------|----------|
+| `src/__init__.py`          | 0       | 0         | 100%     |
+| `src/masks.py`             | 16      | 0         | 100%     |
+| `src/processing.py`        | 21      | 1         | 95%      |
+| `src/generators.py`        | 12      | 0         | 100%     |
+| `src/widget.py`            | 21      | 1         | 95%      |
+| `tests/__init__.py`        | 0       | 0         | 100%     |
+| `tests/test_generators.py` | 66      | 0         | 100%     |
+| `tests/test_masks.py`      | 40      | 0         | 100%     |
+| `tests/test_processing.py` | 61      | 0         | 100%     |
+| `tests/test_widget.py`     | 46      | 2         | 96%      |
+| **ИТОГО**                  | **283** | **4**     | **99%**  |
 ## Лицензия
 Проект создан в учебных целях.
 ## Автор
