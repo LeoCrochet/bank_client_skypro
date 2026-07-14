@@ -18,7 +18,7 @@ def get_mask_card_number(card_number: str) -> str:
         ValueError: Если номер карты содержит не 16 цифр
     """
     # Удаляем все пробелы и проверяем длину
-    clean_number = card_number.replace(" ", "")
+    clean_number = card_number.replace("\t", "").replace(" ", "")
 
     if not clean_number.isdigit():
         raise ValueError("Номер карты должен содержать только цифры")
@@ -49,13 +49,12 @@ def get_mask_account(account_number: str) -> str:
         ValueError: Если номер счета содержит менее 4 цифр
     """
     # Удаляем все пробелы
-    clean_number = account_number.replace(" ", "")
-
-    if not clean_number.isdigit():
-        raise ValueError("Номер счета должен содержать только цифры")
+    clean_number = account_number.replace(" ", "").replace("\t", "")
 
     if len(clean_number) < 4:
         raise ValueError("Номер счета должен содержать минимум 4 цифры")
+    if not clean_number.isdigit():
+        raise ValueError("Номер счета должен содержать только цифры")
 
     # Показываем только последние 4 цифры, остальное маскируем
     masked = f"**{clean_number[-4:]}"
