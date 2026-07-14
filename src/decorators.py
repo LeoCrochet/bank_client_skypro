@@ -8,6 +8,7 @@ from typing import Any, Callable, Optional
 
 def log(filename: Optional[str] = None) -> Callable:
     """Декоратор для логирования выполнения функции."""
+
     def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
@@ -21,11 +22,11 @@ def log(filename: Optional[str] = None) -> Callable:
 
             # Создаем новый обработчик
             if filename:
-                handler = logging.FileHandler(filename, encoding='utf-8')
+                handler = logging.FileHandler(filename, encoding="utf-8")
             else:
                 handler = logging.StreamHandler(sys.stdout)
 
-            handler.setFormatter(logging.Formatter('%(message)s'))
+            handler.setFormatter(logging.Formatter("%(message)s"))
             logger.addHandler(handler)
 
             try:

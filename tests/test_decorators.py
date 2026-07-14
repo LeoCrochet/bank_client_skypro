@@ -1,8 +1,9 @@
 """Тесты для модуля decorators."""
 
-from typing import Any, Generator
 import os
 import tempfile
+from typing import Any, Generator
+
 import pytest
 
 from src.decorators import log
@@ -24,6 +25,7 @@ def temp_file() -> Generator[str, None, None]:
         except PermissionError:
             # На Windows может быть задержка, пробуем еще раз
             import time
+
             time.sleep(0.1)
             try:
                 os.unlink(filename)
@@ -32,6 +34,7 @@ def temp_file() -> Generator[str, None, None]:
 
 
 # -------- ТЕСТЫ ДЛЯ ЛОГИРОВАНИЯ В КОНСОЛЬ --------
+
 
 def test_log_to_console_success(capsys: Any) -> None:
     """Тест: логирование успешного выполнения в консоль."""
@@ -74,7 +77,7 @@ def test_log_multiple_calls_to_console(capsys: Any) -> None:
     increment(3)
 
     captured = capsys.readouterr()
-    lines = captured.out.strip().split('\n')
+    lines = captured.out.strip().split("\n")
     assert len(lines) == 3
     for line in lines:
         assert "increment ok" in line
@@ -90,7 +93,7 @@ def test_log_to_file_success(temp_file: str) -> None:
     result = multiply(4, 5)
     assert result == 20
 
-    with open(temp_file, 'r', encoding='utf-8') as f:
+    with open(temp_file, "r", encoding="utf-8") as f:
         content = f.read()
         assert "multiply ok" in content
 
@@ -105,7 +108,7 @@ def test_log_to_file_error(temp_file: str) -> None:
     with pytest.raises(ZeroDivisionError):
         divide(10, 0)
 
-    with open(temp_file, 'r', encoding='utf-8') as f:
+    with open(temp_file, "r", encoding="utf-8") as f:
         content = f.read()
         assert "divide error: ZeroDivisionError" in content
         assert "Inputs: (10, 0)" in content
@@ -122,15 +125,16 @@ def test_log_multiple_calls_to_file(temp_file: str) -> None:
     increment(2)
     increment(3)
 
-    with open(temp_file, 'r', encoding='utf-8') as f:
+    with open(temp_file, "r", encoding="utf-8") as f:
         content = f.read()
-        lines = content.strip().split('\n')
+        lines = content.strip().split("\n")
         assert len(lines) == 3
         for line in lines:
             assert "increment ok" in line
 
 
 # -------- ТЕСТЫ НА СОХРАНЕНИЕ МЕТАДАННЫХ --------
+
 
 def test_log_preserves_function_name() -> None:
     """Тест: декоратор сохраняет имя функции."""
@@ -161,9 +165,9 @@ def test_log_preserves_function_signature() -> None:
         return a + b + c
 
     import inspect
-    sig = inspect.signature(add)
-    assert 'a' in sig.parameters
-    assert 'b' in sig.parameters
-    assert 'c' in sig.parameters
-    assert sig.parameters['c'].default == 0
 
+    sig = inspect.signature(add)
+    assert "a" in sig.parameters
+    assert "b" in sig.parameters
+    assert "c" in sig.parameters
+    assert sig.parameters["c"].default == 0
