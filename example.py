@@ -1,5 +1,5 @@
 """примеры использования функций модулей masks.py, processing.py, widget.py, generators.py"""
-
+from src.utils import get_transactions_from_json
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 from src.masks import get_mask_account, get_mask_card_number
 from src.processing import filter_by_state, sort_by_date
@@ -228,3 +228,9 @@ eur_transactions = filter_by_currency(transactions, "EUR")
 eur_list = list(eur_transactions)
 if not eur_list:
     print("  Транзакции в EUR не найдены")
+
+print("-" * 50)
+print("\n6. ЧТЕНИЕ СПИСКА ОПЕРАЦИЙ ИЗ ФАЙЛА data/operations.json")
+transactions = get_transactions_from_json("data/operations.json")
+print(transactions)
+print("-" * 50)
