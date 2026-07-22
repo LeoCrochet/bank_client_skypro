@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from typing import Dict, Any
 
+from example import result
+
 load_dotenv('.env')
 API_KEY = os.getenv("API_KEY_EXCHANGER")
 
@@ -44,7 +46,8 @@ def convert_amount_to_rub(transaction: Dict[str, Any]) -> float:
 
             data = response.json()
 
-            return data.get('result')
+            return data.get('result',0.0)
+
 
         except requests.exceptions.RequestException as e:
             print(f"Ошибка при обращении к API для валюты {currency_code}: {e}")
