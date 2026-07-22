@@ -1,14 +1,16 @@
 """Тесты для модуля external_api."""
 
+from typing import Any, Dict
+from unittest.mock import MagicMock, patch
+
 import pytest
 import requests
-from unittest.mock import patch, MagicMock
-from typing import Any, Dict
 
 from src.external_api import convert_amount_to_rub
 
 
 # -------- ТЕСТОВЫЕ ДАННЫЕ --------
+
 
 @pytest.fixture
 def rub_transaction() -> Dict[str, Any]:
@@ -17,13 +19,10 @@ def rub_transaction() -> Dict[str, Any]:
         "id": 873106923,
         "state": "EXECUTED",
         "date": "2019-03-23T01:09:46.296404",
-        "operationAmount": {
-            "amount": "43318.34",
-            "currency": {"name": "RUB", "code": "RUB"}
-        },
+        "operationAmount": {"amount": "43318.34", "currency": {"name": "RUB", "code": "RUB"}},
         "description": "Перевод со счета на счет",
         "from": "Счет 44812258784861134719",
-        "to": "Счет 74489636417521191160"
+        "to": "Счет 74489636417521191160",
     }
 
 
@@ -34,13 +33,10 @@ def usd_transaction() -> Dict[str, Any]:
         "id": 939719570,
         "state": "EXECUTED",
         "date": "2018-06-30T02:08:58.425572",
-        "operationAmount": {
-            "amount": "9824.07",
-            "currency": {"name": "USD", "code": "USD"}
-        },
+        "operationAmount": {"amount": "9824.07", "currency": {"name": "USD", "code": "USD"}},
         "description": "Перевод организации",
         "from": "Счет 75106830613657916952",
-        "to": "Счет 11776614605963066702"
+        "to": "Счет 11776614605963066702",
     }
 
 
@@ -51,13 +47,10 @@ def eur_transaction() -> Dict[str, Any]:
         "id": 142264268,
         "state": "EXECUTED",
         "date": "2019-04-04T23:20:05.206878",
-        "operationAmount": {
-            "amount": "79114.93",
-            "currency": {"name": "EUR", "code": "EUR"}
-        },
+        "operationAmount": {"amount": "79114.93", "currency": {"name": "EUR", "code": "EUR"}},
         "description": "Перевод со счета на счет",
         "from": "Счет 19708645243227258542",
-        "to": "Счет 75651667383060284188"
+        "to": "Счет 75651667383060284188",
     }
 
 
@@ -68,13 +61,10 @@ def btc_transaction() -> Dict[str, Any]:
         "id": 123456789,
         "state": "EXECUTED",
         "date": "2024-01-01T12:00:00.000000",
-        "operationAmount": {
-            "amount": "1000.00",
-            "currency": {"name": "BTC", "code": "BTC"}
-        },
+        "operationAmount": {"amount": "1000.00", "currency": {"name": "BTC", "code": "BTC"}},
         "description": "Покупка криптовалюты",
         "from": "Счет 12345678901234567890",
-        "to": "Кошелек 1A2B3C4D5E6F7G8H9I0J"
+        "to": "Кошелек 1A2B3C4D5E6F7G8H9I0J",
     }
 
 
@@ -85,11 +75,12 @@ def invalid_transaction() -> Dict[str, Any]:
         "id": 999999999,
         "state": "EXECUTED",
         "date": "2024-01-01T12:00:00.000000",
-        "description": "Невалидная транзакция"
+        "description": "Невалидная транзакция",
     }
 
 
 # -------- ТЕСТЫ ДЛЯ RUB (БЕЗ API) --------
+
 
 def test_convert_rub_transaction(rub_transaction: Dict[str, Any]) -> None:
     """Тест: конвертация рублевой транзакции."""
@@ -100,12 +91,7 @@ def test_convert_rub_transaction(rub_transaction: Dict[str, Any]) -> None:
 
 def test_convert_rub_transaction_returns_float() -> None:
     """Тест: возвращается float для RUB."""
-    transaction = {
-        "operationAmount": {
-            "amount": "100.50",
-            "currency": {"code": "RUB"}
-        }
-    }
+    transaction = {"operationAmount": {"amount": "100.50", "currency": {"code": "RUB"}}}
     result = convert_amount_to_rub(transaction)
     assert result == 100.50
     assert isinstance(result, float)
@@ -113,11 +99,9 @@ def test_convert_rub_transaction_returns_float() -> None:
 
 # -------- ТЕСТЫ ДЛЯ USD (С МОКОМ) --------
 
-@patch('src.external_api.requests.request')
-def test_convert_usd_transaction_success(
-    mock_request: MagicMock,
-    usd_transaction: Dict[str, Any]
-) -> None:
+
+@patch("src.external_api.requests.request")
+def test_convert_usd_transaction_success(mock_request: MagicMock, usd_transaction: Dict[str, Any]) -> None:
     """Тест: успешная конвертация USD в RUB."""
     # Настраиваем мок ответа API
     mock_response = MagicMock()
@@ -139,14 +123,11 @@ def test_convert_usd_transaction_success(
     assert "to=RUB" in call_args[0][1]
     assert "from=USD" in call_args[0][1]
     assert "amount=9824.07" in call_args[0][1]
-    assert call_args[1]['headers']['apikey'] is not None
+    assert call_args[1]["headers"]["apikey"] is not None
 
 
-@patch('src.external_api.requests.request')
-def test_convert_usd_transaction_api_error(
-    mock_request: MagicMock,
-    usd_transaction: Dict[str, Any]
-) -> None:
+@patch("src.external_api.requests.request")
+def test_convert_usd_transaction_api_error(mock_request: MagicMock, usd_transaction: Dict[str, Any]) -> None:
     """Тест: ошибка API при конвертации USD."""
     mock_request.side_effect = requests.exceptions.RequestException("API connection error")
 
@@ -155,11 +136,8 @@ def test_convert_usd_transaction_api_error(
     assert result == 0.0
 
 
-@patch('src.external_api.requests.request')
-def test_convert_usd_transaction_http_error(
-    mock_request: MagicMock,
-    usd_transaction: Dict[str, Any]
-) -> None:
+@patch("src.external_api.requests.request")
+def test_convert_usd_transaction_http_error(mock_request: MagicMock, usd_transaction: Dict[str, Any]) -> None:
     """Тест: HTTP ошибка при запросе к API."""
     mock_response = MagicMock()
     mock_response.status_code = 404
@@ -171,11 +149,8 @@ def test_convert_usd_transaction_http_error(
     assert result == 0.0
 
 
-@patch('src.external_api.requests.request')
-def test_convert_usd_transaction_missing_result(
-    mock_request: MagicMock,
-    usd_transaction: Dict[str, Any]
-) -> None:
+@patch("src.external_api.requests.request")
+def test_convert_usd_transaction_missing_result(mock_request: MagicMock, usd_transaction: Dict[str, Any]) -> None:
     """Тест: отсутствие 'result' в ответе API."""
     mock_response = MagicMock()
     mock_response.status_code = 200
@@ -188,11 +163,8 @@ def test_convert_usd_transaction_missing_result(
     assert result == 0.0
 
 
-@patch('src.external_api.requests.request')
-def test_convert_usd_transaction_empty_response(
-    mock_request: MagicMock,
-    usd_transaction: Dict[str, Any]
-) -> None:
+@patch("src.external_api.requests.request")
+def test_convert_usd_transaction_empty_response(mock_request: MagicMock, usd_transaction: Dict[str, Any]) -> None:
     """Тест: пустой ответ от API."""
     mock_response = MagicMock()
     mock_response.status_code = 200
@@ -207,11 +179,9 @@ def test_convert_usd_transaction_empty_response(
 
 # -------- ТЕСТЫ ДЛЯ EUR (С МОКОМ) --------
 
-@patch('src.external_api.requests.request')
-def test_convert_eur_transaction_success(
-    mock_request: MagicMock,
-    eur_transaction: Dict[str, Any]
-) -> None:
+
+@patch("src.external_api.requests.request")
+def test_convert_eur_transaction_success(mock_request: MagicMock, eur_transaction: Dict[str, Any]) -> None:
     """Тест: успешная конвертация EUR в RUB."""
     mock_response = MagicMock()
     mock_response.status_code = 200
@@ -230,11 +200,8 @@ def test_convert_eur_transaction_success(
     assert "amount=79114.93" in call_args[0][1]
 
 
-@patch('src.external_api.requests.request')
-def test_convert_eur_transaction_api_error(
-    mock_request: MagicMock,
-    eur_transaction: Dict[str, Any]
-) -> None:
+@patch("src.external_api.requests.request")
+def test_convert_eur_transaction_api_error(mock_request: MagicMock, eur_transaction: Dict[str, Any]) -> None:
     """Тест: ошибка API при конвертации EUR."""
     mock_request.side_effect = requests.exceptions.RequestException("API timeout")
 
@@ -245,6 +212,7 @@ def test_convert_eur_transaction_api_error(
 
 # -------- ТЕСТЫ ДЛЯ НЕПОДДЕРЖИВАЕМЫХ ВАЛЮТ --------
 
+
 def test_convert_btc_transaction(btc_transaction: Dict[str, Any]) -> None:
     """Тест: конвертация неподдерживаемой валюты (BTC)."""
     result = convert_amount_to_rub(btc_transaction)
@@ -252,6 +220,7 @@ def test_convert_btc_transaction(btc_transaction: Dict[str, Any]) -> None:
 
 
 # -------- ТЕСТЫ ДЛЯ НЕВАЛИДНЫХ ТРАНЗАКЦИЙ --------
+
 
 def test_convert_invalid_transaction(invalid_transaction: Dict[str, Any]) -> None:
     """Тест: транзакция без суммы и валюты."""
@@ -267,35 +236,25 @@ def test_convert_empty_transaction() -> None:
 
 def test_convert_transaction_without_currency() -> None:
     """Тест: транзакция без валюты."""
-    transaction = {
-        "operationAmount": {
-            "amount": "1000.00"
-        }
-    }
+    transaction = {"operationAmount": {"amount": "1000.00"}}
     result = convert_amount_to_rub(transaction)
     assert result == 0.0
 
 
 def test_convert_transaction_without_amount() -> None:
     """Тест: транзакция без суммы."""
-    transaction = {
-        "operationAmount": {
-            "currency": {"code": "USD"}
-        }
-    }
+    transaction = {"operationAmount": {"currency": {"code": "USD"}}}
     result = convert_amount_to_rub(transaction)
     assert result == 0.0
 
 
 # -------- ТЕСТЫ НА ТИПЫ --------
 
-@patch('src.external_api.requests.request')
-def test_convert_usd_handles_string_amount(
-    mock_request: MagicMock,
-    usd_transaction: Dict[str, Any]
-) -> None:
+
+@patch("src.external_api.requests.request")
+def test_convert_usd_handles_string_amount(mock_request: MagicMock, usd_transaction: Dict[str, Any]) -> None:
     """Тест: сумма транзакции может быть строкой."""
-    usd_transaction['operationAmount']['amount'] = "1000.50"
+    usd_transaction["operationAmount"]["amount"] = "1000.50"
 
     mock_response = MagicMock()
     mock_response.status_code = 200
@@ -308,13 +267,10 @@ def test_convert_usd_handles_string_amount(
     assert result == pytest.approx(88544.25, 0.001)
 
 
-@patch('src.external_api.requests.request')
-def test_convert_usd_handles_float_amount(
-    mock_request: MagicMock,
-    usd_transaction: Dict[str, Any]
-) -> None:
+@patch("src.external_api.requests.request")
+def test_convert_usd_handles_float_amount(mock_request: MagicMock, usd_transaction: Dict[str, Any]) -> None:
     """Тест: сумма транзакции может быть float."""
-    usd_transaction['operationAmount']['amount'] = 1000.50
+    usd_transaction["operationAmount"]["amount"] = 1000.50
 
     mock_response = MagicMock()
     mock_response.status_code = 200
@@ -329,11 +285,10 @@ def test_convert_usd_handles_float_amount(
 
 # -------- ТЕСТЫ НА МНОЖЕСТВЕННЫЕ ВЫЗОВЫ --------
 
-@patch('src.external_api.requests.request')
+
+@patch("src.external_api.requests.request")
 def test_convert_multiple_transactions(
-    mock_request: MagicMock,
-    usd_transaction: Dict[str, Any],
-    eur_transaction: Dict[str, Any]
+    mock_request: MagicMock, usd_transaction: Dict[str, Any], eur_transaction: Dict[str, Any]
 ) -> None:
     """Тест: несколько транзакций с разными валютами."""
     # Настраиваем мок на последовательные ответы

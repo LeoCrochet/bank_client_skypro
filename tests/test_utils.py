@@ -13,7 +13,7 @@ from src.utils import get_transactions_from_json
 @pytest.fixture
 def temp_json_file() -> Generator[str, None, None]:
     """Фикстура: создает временный JSON-файл и удаляет его после теста."""
-    fd, filename = tempfile.mkstemp(suffix='.json')
+    fd, filename = tempfile.mkstemp(suffix=".json")
     os.close(fd)
     yield filename
     if os.path.exists(filename):
@@ -27,7 +27,7 @@ def test_get_transactions_from_json_valid(temp_json_file: str) -> None:
         {"id": 2, "amount": 200, "currency": "EUR"},
     ]
 
-    with open(temp_json_file, 'w', encoding='utf-8') as f:
+    with open(temp_json_file, "w", encoding="utf-8") as f:
         json.dump(test_data, f)
 
     result = get_transactions_from_json(temp_json_file)
@@ -39,7 +39,7 @@ def test_get_transactions_from_json_valid(temp_json_file: str) -> None:
 def test_get_transactions_from_json_empty_file(temp_json_file: str) -> None:
     """Тест: пустой файл."""
     # Создаем пустой файл
-    with open(temp_json_file, 'w', encoding='utf-8'):
+    with open(temp_json_file, "w", encoding="utf-8"):
         pass
 
     result = get_transactions_from_json(temp_json_file)
@@ -56,7 +56,7 @@ def test_get_transactions_from_json_not_found() -> None:
 
 def test_get_transactions_from_json_invalid_json(temp_json_file: str) -> None:
     """Тест: невалидный JSON."""
-    with open(temp_json_file, 'w', encoding='utf-8') as f:
+    with open(temp_json_file, "w", encoding="utf-8") as f:
         f.write("{invalid json}")
 
     result = get_transactions_from_json(temp_json_file)
@@ -68,7 +68,7 @@ def test_get_transactions_from_json_not_list(temp_json_file: str) -> None:
     """Тест: JSON не является списком."""
     test_data = {"key": "value"}
 
-    with open(temp_json_file, 'w', encoding='utf-8') as f:
+    with open(temp_json_file, "w", encoding="utf-8") as f:
         json.dump(test_data, f)
 
     result = get_transactions_from_json(temp_json_file)
@@ -78,7 +78,7 @@ def test_get_transactions_from_json_not_list(temp_json_file: str) -> None:
 
 def test_get_transactions_from_json_empty_list(temp_json_file: str) -> None:
     """Тест: пустой список в JSON."""
-    with open(temp_json_file, 'w', encoding='utf-8') as f:
+    with open(temp_json_file, "w", encoding="utf-8") as f:
         json.dump([], f)
 
     result = get_transactions_from_json(temp_json_file)
