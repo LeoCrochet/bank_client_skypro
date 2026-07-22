@@ -14,13 +14,6 @@ def convert_amount_to_rub(transaction: Dict[str, Any]) -> float:
     Если валюта транзакции 'RUB', возвращает исходную сумму.
     Если валюта 'USD' или 'EUR', получает текущий курс через внешнее API.
     В случае ошибки API или неизвестной валюты, возвращает 0.0.
-
-    Args:
-        transaction (Dict[str, Any]): Словарь с данными транзакции.
-            Должен содержать ключ 'operationAmount' с вложенными 'amount' и 'currency'.
-
-    Returns:
-        float: Сумма в рублях. 0.0 в случае ошибки.
     """
     try:
         operation_amount = transaction.get('operationAmount', {})
