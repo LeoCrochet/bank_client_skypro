@@ -1,26 +1,31 @@
 """Модуль для маскировки номеров банковских карт и счетов."""
-import logging, os
+
+import logging
+import os
+
+
 # Настройка логгера для модуля masks
-logger = logging.getLogger('masks')
+logger = logging.getLogger("masks")
 logger.setLevel(logging.INFO)
 
 # Создаем директорию logs, если её нет
-os.makedirs('logs', exist_ok=True)
+os.makedirs("logs", exist_ok=True)
 
 # Очищаем файл лога при запуске (перезапись)
-if os.path.exists('logs/masks.log'):
-    with open('logs/masks.log', 'w') as f:
+if os.path.exists("logs/masks.log"):
+    with open("logs/masks.log", "w") as f:
         pass
 
 # Настройка обработчика для записи в файл
-file_handler = logging.FileHandler('logs/masks.log', encoding='utf-8')
-file_handler.setLevel(logging.INFO)
+file_handler = logging.FileHandler("logs/masks.log", encoding="utf-8")
+file_handler.setLevel(logging.DEBUG)
 
 # Формат лога: время | модуль | уровень | сообщение
-formatter = logging.Formatter('%(asctime)s | %(name)s | %(levelname)s | %(message)s')
+formatter = logging.Formatter("%(asctime)s | %(name)s | %(levelname)s | %(message)s")
 file_handler.setFormatter(formatter)
 
 logger.addHandler(file_handler)
+
 
 def get_mask_card_number(card_number: str) -> str:
     """
@@ -40,10 +45,11 @@ def get_mask_card_number(card_number: str) -> str:
     """
     # Удаляем все пробелы и проверяем длину
     try:
-        logger.info(
-            f"Начало маскировки карты: {card_number[:4] if len(card_number) >= 4
-            else card_number}****{card_number[-4:] if len(card_number) >= 4 
-            else ''}")
+        if len(card_number) >= 4:
+            masked_preview = f"{card_number[:4]}****{card_number[-4:]}"
+        else:
+            masked_preview = card_number
+        logger.info(f"Начало маскировки карты: {masked_preview}")
 
         # Удаляем все пробелы и проверяем длину
         clean_number = card_number.replace("\t", "").replace(" ", "")
@@ -85,10 +91,12 @@ def get_mask_account(account_number: str) -> str:
     """
     # Удаляем все пробелы
     try:
-        logger.info(
-            f"Начало маскировки счета: {account_number[:2] if len(account_number) >= 2
-            else account_number}****{account_number[-4:] if len(account_number) >= 4
-            else ''}")
+        if len(account_number) >= 4:
+            logger.info(f"Начало маскировки счета: {account_number[:2]}****{account_number[-4:]}")
+        elif len(account_number) >= 2:
+            logger.info(f"Начало маскировки счета: {account_number[:2]}****")
+        else:
+            logger.info(f"Начало маскировки счета: {account_number}")
 
         # Удаляем все пробелы
         clean_number = account_number.replace(" ", "").replace("\t", "")

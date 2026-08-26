@@ -8,23 +8,23 @@ from typing import Any, Dict, List
 
 # -------- НАСТРОЙКА ЛОГГЕРА --------
 
-logger = logging.getLogger('utils')
-logger.setLevel(logging.INFO)
+logger = logging.getLogger("utils")
+logger.setLevel(logging.DEBUG)
 
 # Создаем директорию logs, если её нет
-os.makedirs('logs', exist_ok=True)
+os.makedirs("logs", exist_ok=True)
 
 # Очищаем файл лога при запуске (перезапись)
-if os.path.exists('logs/utils.log'):
-    with open('logs/utils.log', 'w') as f:
+if os.path.exists("logs/utils.log"):
+    with open("logs/utils.log", "w") as f:
         pass
 
 # Настройка обработчика для записи в файл
-file_handler = logging.FileHandler('logs/utils.log', encoding='utf-8')
+file_handler = logging.FileHandler("logs/utils.log", encoding="utf-8")
 file_handler.setLevel(logging.INFO)
 
 # Формат лога: время | модуль | уровень | сообщение
-formatter = logging.Formatter('%(asctime)s | %(name)s | %(levelname)s | %(message)s')
+formatter = logging.Formatter("%(asctime)s | %(name)s | %(levelname)s | %(message)s")
 file_handler.setFormatter(formatter)
 
 logger.addHandler(file_handler)
