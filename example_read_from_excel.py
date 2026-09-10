@@ -1,4 +1,3 @@
-
 from src.file_readers import read_transactions_from_excel
 
 
@@ -26,6 +25,7 @@ def main() -> None:
             print()
     else:
         print("❌ Транзакции не найдены или файл пуст.")
+
 
 if __name__ == "__main__":
     main()

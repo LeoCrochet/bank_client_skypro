@@ -1,6 +1,5 @@
 from src.external_api import convert_amount_to_rub
 
-
 transaction_usd = {
     "id": 939719570,
     "state": "EXECUTED",

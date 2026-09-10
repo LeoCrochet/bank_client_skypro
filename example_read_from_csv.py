@@ -35,5 +35,6 @@ def main() -> None:
     print("ЧТЕНИЕ ТРАНЗАКЦИЙ ИЗ EXCEL-ФАЙЛА")
     print("=" * 70)
 
+
 if __name__ == "__main__":
     main()

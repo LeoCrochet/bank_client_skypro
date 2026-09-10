@@ -1,16 +1,15 @@
 """Тесты для модуля file_readers."""
 
-import os
 from typing import Any, Dict, List
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import pandas as pd
 import pytest
 
 from src.file_readers import read_transactions_from_csv, read_transactions_from_excel
 
-
 # -------- ФИКСТУРЫ --------
+
 
 @pytest.fixture
 def sample_transactions() -> List[Dict[str, Any]]:
@@ -43,6 +42,7 @@ def sample_transactions() -> List[Dict[str, Any]]:
 
 # -------- ТЕСТЫ ДЛЯ CSV --------
 
+
 @patch("src.file_readers.os.path.exists")
 @patch("src.file_readers.os.path.getsize")
 @patch("src.file_readers.pd.read_csv")
@@ -64,9 +64,7 @@ def test_read_csv_success(
 
     assert result == sample_transactions
     assert len(result) == 2
-    mock_read_csv.assert_called_once_with(
-        "data/transactions.csv", sep=";", encoding="utf-8"
-    )
+    mock_read_csv.assert_called_once_with("data/transactions.csv", sep=";", encoding="utf-8")
 
 
 @patch("src.file_readers.os.path.exists")
@@ -171,6 +169,7 @@ def test_read_csv_empty_result(
 
 # -------- ТЕСТЫ ДЛЯ EXCEL --------
 
+
 @patch("src.file_readers.os.path.exists")
 @patch("src.file_readers.os.path.getsize")
 @patch("src.file_readers.pd.read_excel")
@@ -192,9 +191,7 @@ def test_read_excel_success(
 
     assert result == sample_transactions
     assert len(result) == 2
-    mock_read_excel.assert_called_once_with(
-        "data/transactions_excel.xlsx", engine="calamine"
-    )
+    mock_read_excel.assert_called_once_with("data/transactions_excel.xlsx", engine="calamine")
 
 
 @patch("src.file_readers.os.path.exists")
