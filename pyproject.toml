@@ -8,13 +8,17 @@ authors = [
 requires-python = "^3.14"
 dependencies = [
     "requests (>=2.34.2,<3.0.0)",
-    "dotenv (>=0.9.9,<0.10.0)"
+    "dotenv (>=0.9.9,<0.10.0)",
+    "python-calamine (>=0.8.2,<0.9.0)",
+    "pandas (>=3.0.5,<4.0.0)",
+    "pandas-stubs (>=3.0.5,<3.1.0)"
 ]
 
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
 
 [dependency-groups]
 lint = [
