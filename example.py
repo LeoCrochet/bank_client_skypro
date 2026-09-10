@@ -232,6 +232,6 @@ if not eur_list:
 
 print("-" * 50)
 print("\n6. ЧТЕНИЕ СПИСКА ОПЕРАЦИЙ ИЗ ФАЙЛА data/operations.json")
-transactions = get_transactions_from_json("data/operations_test.json")
+transactions = get_transactions_from_json("data/operations.json")
 print(transactions)
 print("-" * 50)
