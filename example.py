@@ -6,7 +6,6 @@ from src.processing import filter_by_state, sort_by_date
 from src.utils import get_transactions_from_json
 from src.widget import get_date, mask_account_card
 
-
 # Примеры для карт
 card_numbers = ["1234567890123456", "1111222233334444", "9876543210987654"]
 

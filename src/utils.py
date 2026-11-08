@@ -5,7 +5,6 @@ import logging
 import os
 from typing import Any, Dict, List
 
-
 # -------- НАСТРОЙКА ЛОГГЕРА --------
 
 logger = logging.getLogger("utils")
