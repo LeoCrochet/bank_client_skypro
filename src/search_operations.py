@@ -41,10 +41,7 @@ def process_bank_operations(data: List[Dict[str, Any]], categories: List[str]) -
     Returns:
         Dict[str, int]: Словарь, где ключи — категории, значения — количество операций.
     """
-    descriptions = [
-        t.get("description") for t in data
-        if t.get("description") in categories
-    ]
+    descriptions = [t.get("description") for t in data if t.get("description") in categories]
 
     counts = Counter(descriptions)
 

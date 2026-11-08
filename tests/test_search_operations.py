@@ -46,6 +46,7 @@ def transactions() -> List[Dict[str, Any]]:
 
 # -------- ТЕСТЫ ПОИСКА (process_bank_search) --------
 
+
 def test_process_bank_search_found(transactions: List[Dict[str, Any]]) -> None:
     """Тест: поиск по описанию находит совпадения."""
     result = process_bank_search(transactions, "перевод")
@@ -77,6 +78,7 @@ def test_process_bank_search_special_chars(transactions: List[Dict[str, Any]]) -
 
 
 # -------- ТЕСТЫ ПОДСЧЕТА (process_bank_operations) --------
+
 
 def test_process_bank_operations(transactions: List[Dict[str, Any]]) -> None:
     """Тест: правильный подсчет категорий."""

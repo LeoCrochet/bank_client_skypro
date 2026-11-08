@@ -8,6 +8,7 @@ import requests
 
 from src.external_api import convert_amount_to_rub
 
+
 # -------- ТЕСТОВЫЕ ДАННЫЕ --------
 
 

@@ -3,6 +3,7 @@
 import logging
 import os
 
+
 # Настройка логгера для модуля masks
 logger = logging.getLogger("masks")
 logger.setLevel(logging.INFO)
